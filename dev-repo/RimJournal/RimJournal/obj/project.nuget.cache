@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "HyBCG+X/JMdDraS991CfI0H1iV7NjDZXaFWTHjSpu9yl/8OBk2+O2pnkadStN88Zno3WFFaWSiWiqXzzVwMSsA==",
+  "success": true,
+  "projectFilePath": "D:\\Mod Making\\Rimworld\\rim-journal\\dev-repo\\RimJournal\\RimJournal\\RimJournal.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Sam Lipscomb\\.nuget\\packages\\lib.harmony\\2.3.3\\lib.harmony.2.3.3.nupkg.sha512"
+  ],
+  "logs": []
+}

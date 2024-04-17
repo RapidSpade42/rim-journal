@@ -1,0 +1,65 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Mod Making\\Rimworld\\rim-journal\\dev-repo\\RimJournal\\RimJournal\\RimJournal.csproj": {}
+  },
+  "projects": {
+    "D:\\Mod Making\\Rimworld\\rim-journal\\dev-repo\\RimJournal\\RimJournal\\RimJournal.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Mod Making\\Rimworld\\rim-journal\\dev-repo\\RimJournal\\RimJournal\\RimJournal.csproj",
+        "projectName": "RimJournal",
+        "projectPath": "D:\\Mod Making\\Rimworld\\rim-journal\\dev-repo\\RimJournal\\RimJournal\\RimJournal.csproj",
+        "packagesPath": "C:\\Users\\Sam Lipscomb\\.nuget\\packages\\",
+        "outputPath": "D:\\Mod Making\\Rimworld\\rim-journal\\dev-repo\\RimJournal\\RimJournal\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "C:\\Users\\Sam Lipscomb\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "dependencies": {
+            "Lib.Harmony": {
+              "target": "Package",
+              "version": "[2.3.3, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-arm64": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}
