@@ -1,4 +1,10 @@
-﻿using RimWorld;
+﻿/*
+ * Created by Rapid Spade
+ * 
+ * Last Updated: 4/17/2024
+ */
+
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,14 +13,16 @@ using Verse;
 
 namespace RapidSpade.RimJournal
 {
+    // Inherits then create MainTabWindow_RimJournal class
     [StaticConstructorOnStartup]
     public class MainTabWindow_RimJournal : MainTabWindow
     {
+        // Private variables
         private string journalTitle = "";
         private string journalText = "";
         private List<string> savedEntries = new List<string>();
-        private float journalTabWidth = 700f; // Default width
-        private float journalTabHeight = 875f; // Default heigh
+        private float journalTabWidth = 700f;
+        private float journalTabHeight = 875f;
         private string selectedEntry = "";
 
         private enum Tab
@@ -25,27 +33,24 @@ namespace RapidSpade.RimJournal
 
         private Tab currentTab = Tab.Journal;
 
+        // Sets default width, height
         public override Vector2 RequestedTabSize => new Vector2(journalTabWidth, journalTabHeight);
 
+        
+        //Renders tab based on selection
         public override void DoWindowContents(Rect rect)
         {
             Rect tabsRect = rect;
             tabsRect.yMin += 45f;
-
-            // Draw tabs
             DrawTabs(tabsRect);
-
-            // Adjust the rect for tab contents
             Rect tabContentsRect = rect;
-            tabContentsRect.yMin += 45f; // Adjust for tab height
+            tabContentsRect.yMin += 45f;
 
-            // Load saved entries before rendering UI
             if (currentTab == Tab.Journal)
             {
                 LoadSavedEntries();
             }
 
-            // Draw tab contents based on current tab
             switch (currentTab)
             {
                 case Tab.Journal:
@@ -56,59 +61,46 @@ namespace RapidSpade.RimJournal
                     break;
             }
         }
-
+        
+        // Draws tabs at top of window
         private void DrawTabs(Rect rect)
         {
-            // Define tabs
             List<TabRecord> tabs = new List<TabRecord>
             {
                 new TabRecord("Journal", () => currentTab = Tab.Journal, currentTab == Tab.Journal),
                 new TabRecord("Settings", () => currentTab = Tab.Settings, currentTab == Tab.Settings)
             };
-
-            // Set the height of the tabsRect to make the tabs more visible
-            float tabHeight = 40f; // Adjust the tab height as needed
+            float tabHeight = 40f; 
             Rect tabsRect = new Rect(rect.x, rect.y, rect.width, tabHeight);
-
-            // Draw tabs
             TabDrawer.DrawTabs(tabsRect, tabs, 200f);
         }
 
+        // Draws journal tab and adds fields, labels, & buttons
         private void DrawJournalTab(Rect rect)
         {
-            // Draw buttons
             float buttonWidth = 100f;
             float buttonHeight = 30f;
             float buttonSpacing = 10f;
             float totalButtonWidth = 4 * buttonWidth + 3 * buttonSpacing;
             float buttonY = rect.height - buttonHeight - 10f;
 
-            // Label for title input
             Text.Anchor = TextAnchor.MiddleCenter;
             Widgets.Label(new Rect(0f, 80f, rect.width, 30f), "Entry Title");
             Text.Anchor = TextAnchor.UpperLeft;
-
-            // Text input area for title
             Rect titleInputRect = new Rect(0f, 110f, rect.width, 30f);
             journalTitle = Widgets.TextField(titleInputRect, journalTitle);
-
-            // Label for body input
             Text.Anchor = TextAnchor.MiddleCenter;
             Widgets.Label(new Rect(0f, 150f, rect.width, 30f), "Entry Body");
             Text.Anchor = TextAnchor.UpperLeft;
-
-            // Text input area for journal body
-            Rect textAreaRect = new Rect(0f, 180f, rect.width, rect.height - 250f); // Adjusted the height here
+            Rect textAreaRect = new Rect(0f, 180f, rect.width, rect.height - 250f);
             journalText = Widgets.TextArea(textAreaRect, journalText);
 
-            // Save button
             Rect saveButtonRect = new Rect((rect.width - totalButtonWidth) / 2f, buttonY, buttonWidth, buttonHeight);
             if (Widgets.ButtonText(saveButtonRect, "Save"))
             {
                 SaveJournalEntry();
             }
 
-            // New button
             Rect newButtonRect = new Rect(saveButtonRect.xMax + buttonSpacing, buttonY, buttonWidth, buttonHeight);
             if (Widgets.ButtonText(newButtonRect, "New"))
             {
@@ -116,11 +108,9 @@ namespace RapidSpade.RimJournal
                 journalText = "";
             }
 
-            // Load button
             Rect loadButtonRect = new Rect(newButtonRect.xMax + buttonSpacing, buttonY, buttonWidth, buttonHeight);
             if (Widgets.ButtonText(loadButtonRect, "Load"))
             {
-                // Dropdown menu for saved entries
                 if (savedEntries.Any())
                 {
                     List<FloatMenuOption> options = new List<FloatMenuOption>();
@@ -129,7 +119,7 @@ namespace RapidSpade.RimJournal
                         options.Add(new FloatMenuOption(entry, () =>
                         {
                             selectedEntry = entry;
-                            LoadJournalEntry(selectedEntry); // Load the selected entry
+                            LoadJournalEntry(selectedEntry);
                         }));
                     }
                     Find.WindowStack.Add(new FloatMenu(options));
@@ -140,7 +130,6 @@ namespace RapidSpade.RimJournal
                 }
             }
 
-            // Delete button
             Rect deleteButtonRect = new Rect(loadButtonRect.xMax + buttonSpacing, buttonY, buttonWidth, buttonHeight);
             if (Widgets.ButtonText(deleteButtonRect, "Delete") && !string.IsNullOrEmpty(journalTitle))
             {
@@ -148,7 +137,7 @@ namespace RapidSpade.RimJournal
             }
         }
 
-
+        // Draws settings tab and adds options
         private void DrawSettingsTab(Rect rect)
         {
             float labelHeight = 30f;
@@ -156,28 +145,19 @@ namespace RapidSpade.RimJournal
             float buttonHeight = 30f;
             float verticalPadding = 5f;
 
-            // Label for journal tab dimensions
             Rect dimensionsLabelRect = new Rect(0f, 80f, rect.width, labelHeight);
             Widgets.Label(dimensionsLabelRect, "Tab Dimensions:");
-
-            // Label for reopening instructions
             Rect reopenLabelRect = new Rect(0f, dimensionsLabelRect.yMax + verticalPadding, rect.width, labelHeight);
             Widgets.Label(reopenLabelRect, "(Reopen for changes to take effect)");
-
-            // Input field for width
             Rect widthInputRect = new Rect(0f, reopenLabelRect.yMax + verticalPadding, rect.width, inputHeight);
             Widgets.Label(widthInputRect.LeftHalf(), "Width:");
             journalTabWidth = Widgets.HorizontalSlider(widthInputRect.RightHalf(), journalTabWidth, 200f, 1500f);
-
-            // Input field for height
             Rect heightInputRect = new Rect(0f, widthInputRect.yMax + verticalPadding, rect.width, inputHeight);
             Widgets.Label(heightInputRect.LeftHalf(), "Height:");
             journalTabHeight = Widgets.HorizontalSlider(heightInputRect.RightHalf(), journalTabHeight, 200f, 1000f);
 
-            // Calculate positions for buttons
             float buttonY = rect.height - buttonHeight - verticalPadding;
 
-            // Open Explorer button
             Rect openExplorerButtonRect = new Rect(0f, buttonY - buttonHeight - verticalPadding, rect.width, buttonHeight);
             if (Widgets.ButtonText(openExplorerButtonRect, "Open Export Directory"))
             {
@@ -199,21 +179,23 @@ namespace RapidSpade.RimJournal
                 }
             }
 
-            // Reset Settings button
             Rect resetSettingsButtonRect = new Rect(0f, buttonY, rect.width, buttonHeight);
             if (Widgets.ButtonText(resetSettingsButtonRect, "Reset Settings"))
             {
                 ResetSettings();
             }
         }
-
+        
+        // Resets dimensions
         private void ResetSettings()
         {
-            journalTabWidth = 700f; // Default width
-            journalTabHeight = 875f; // Default height
+            journalTabWidth = 700f;
+            journalTabHeight = 875f;
 
             Messages.Message("Settings reset to default values.", MessageTypeDefOf.TaskCompletion, false);
         }
+
+        // Saves current journal entry to export folder
         private void SaveJournalEntry()
         {
             if (string.IsNullOrEmpty(journalTitle))
@@ -237,7 +219,6 @@ namespace RapidSpade.RimJournal
 
             try
             {
-                // Create directory if it doesn't exist
                 if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
@@ -248,10 +229,8 @@ namespace RapidSpade.RimJournal
                     writer.Write(journalText);
                 }
 
-                // Show success message
                 Messages.Message("Journal entry saved to: " + filePath, MessageTypeDefOf.TaskCompletion, false);
 
-                // Update saved entries list
                 if (!savedEntries.Contains(fileName))
                 {
                     savedEntries.Add(fileName);
@@ -263,21 +242,19 @@ namespace RapidSpade.RimJournal
             }
         }
 
+        // Loads existing entries for display
         private void LoadSavedEntries()
         {
-            // Clear the existing entries
             savedEntries.Clear();
 
             string folderPath = Path.Combine(GenFilePaths.SaveDataFolderPath, "RimJournal");
             try
             {
-                // Create directory if it doesn't exist
                 if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
                 }
 
-                // Read files in export folder
                 string[] files = Directory.GetFiles(folderPath);
                 foreach (string file in files)
                 {
@@ -293,6 +270,7 @@ namespace RapidSpade.RimJournal
             }
         }
 
+        // Loads selected journal entry
         private void LoadJournalEntry(string fileName)
         {
             string filePath = Path.Combine(GenFilePaths.SaveDataFolderPath, "RimJournal", fileName);
@@ -305,7 +283,7 @@ namespace RapidSpade.RimJournal
                         journalText = reader.ReadToEnd();
                     }
                     journalTitle = fileName.Replace(".txt", "");
-                    
+
                     Messages.Message("Journal entry loaded: " + journalTitle, MessageTypeDefOf.TaskCompletion, false);
                 }
                 else
@@ -319,6 +297,7 @@ namespace RapidSpade.RimJournal
             }
         }
 
+        // Confirmation dialog before deletion
         private void ConfirmDeleteEntry()
         {
             Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
@@ -328,6 +307,7 @@ namespace RapidSpade.RimJournal
             ));
         }
 
+        // Deletes selected entry
         private void DeleteJournalEntry()
         {
             string filePath = Path.Combine(GenFilePaths.SaveDataFolderPath, "RimJournal", journalTitle + ".txt");
@@ -352,6 +332,7 @@ namespace RapidSpade.RimJournal
             }
         }
 
+        // Checks for files with same title
         private int FindSameTitleCount(string title)
         {
             int count = 1;
