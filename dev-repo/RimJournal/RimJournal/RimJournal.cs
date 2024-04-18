@@ -25,7 +25,15 @@ namespace RapidSpade.RimJournal
 
         private Tab currentTab = Tab.Journal;
 
+        private readonly string settingsFilePath = Path.Combine(GenFilePaths.SaveDataFolderPath, "RimJournal", "Settings.xml");
+
         public override Vector2 RequestedTabSize => new Vector2(journalTabWidth, journalTabHeight);
+
+        public MainTabWindow_RimJournal()
+        {
+            // Load tab dimensions when the window is constructed
+            LoadTabDimensions();
+        }
 
         public override void DoWindowContents(Rect rect)
         {
@@ -181,15 +189,14 @@ namespace RapidSpade.RimJournal
                 // Show success message
                 Messages.Message("Journal entry saved to: " + filePath, MessageTypeDefOf.TaskCompletion, false);
 
-                // Reset text fields
-                journalText = "";
-                journalTitle = "";
-
                 // Update saved entries list
                 if (!savedEntries.Contains(fileName))
                 {
                     savedEntries.Add(fileName);
                 }
+
+                // Save tab dimensions to settings file
+                SaveTabDimensions();
             }
             catch (Exception e)
             {
@@ -239,6 +246,8 @@ namespace RapidSpade.RimJournal
                         journalText = reader.ReadToEnd();
                     }
                     journalTitle = fileName.Replace(".txt", "");
+
+                    Messages.Message("Journal entry loaded: " + journalTitle, MessageTypeDefOf.TaskCompletion, false);
                 }
                 else
                 {
@@ -295,6 +304,49 @@ namespace RapidSpade.RimJournal
                 }
             }
             return count;
+        }
+
+        private void SaveTabDimensions()
+        {
+            try
+            {
+                // Create directory if it doesn't exist
+                string folderPath = Path.GetDirectoryName(settingsFilePath);
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                // Create or overwrite settings file
+                using (StreamWriter writer = new StreamWriter(settingsFilePath))
+                {
+                    writer.WriteLine(journalTabWidth);
+                    writer.WriteLine(journalTabHeight);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error("Error saving tab dimensions: " + e.Message);
+            }
+        }
+
+        private void LoadTabDimensions()
+        {
+            try
+            {
+                if (File.Exists(settingsFilePath))
+                {
+                    using (StreamReader reader = new StreamReader(settingsFilePath))
+                    {
+                        journalTabWidth = Convert.ToSingle(reader.ReadLine());
+                        journalTabHeight = Convert.ToSingle(reader.ReadLine());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error("Error loading tab dimensions: " + e.Message);
+            }
         }
     }
 }
