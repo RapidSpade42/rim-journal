@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ModMetaData>
     <name>RimJournal</name>
-    <author>"Your Name Here"</author>
-    <packageId>yourName.ModName</packageId>
-    <description>"Super Cool Mod"</description>
+    <author>"Rapid Spade"</author>
+    <packageId>RapidSpade.RimJournal</packageId>
+    <description>Want more storytelling out of your game? Want to write about your colonists' miserable lives? Do it then, with RimJournal! 
+        \nAdds an in-game journal for all your creative writing needs. Create, save, load, and delete your journal entries.
+        \nShould be fully compatible with other mods.
+        \nShould be safe to add to existing saves.
+        \nRequirements:
+        \n- None</description>
     <supportedVersions>
-        <li>1.4</li>
+        <li>1.5</li>
     </supportedVersions>
 </ModMetaData>
-<!--
-When adding a preview photo
-
-Must be called Preview.png
-
-Should be
-640x360
-
-Must Not Be Larger then 1MB in size
- -->

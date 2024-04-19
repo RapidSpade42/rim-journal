@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <MainButtonDef>
+        <defName>RimJournal</defName>
+        <label>Journal</label>
+        <description>Open journal menu.</description>
+        <workerClass>RapidSpade.RimJournal.MainButtonWorker_RimJournal</workerClass>
+        <order>75</order>
+        <validWithoutMap>true</validWithoutMap>
+        <minimized>true</minimized>
+        <iconPath>Journal</iconPath>
+    </MainButtonDef>
+</Defs>

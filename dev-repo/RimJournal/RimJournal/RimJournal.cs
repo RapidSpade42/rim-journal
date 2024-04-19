@@ -15,7 +15,7 @@ namespace RapidSpade.RimJournal
         private string journalTitle = "";
         private string journalText = "";
         private List<string> savedEntries = new List<string>();
-        private float journalTabWidth = 700f;
+        private float journalTabWidth = 715f;
         private float journalTabHeight = 875f;
         private string selectedEntry = "";
 
