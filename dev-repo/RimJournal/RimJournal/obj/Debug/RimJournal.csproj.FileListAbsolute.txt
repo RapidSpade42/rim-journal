@@ -33,3 +33,5 @@ D:\Mod Making\Rimworld\rim-journal\dev-repo\RimJournal\RimJournal\bin\Debug\Unit
 D:\Mod Making\Rimworld\rim-journal\dev-repo\RimJournal\RimJournal\obj\Debug\RimJournal.csproj.Up2Date
 D:\Mod Making\Rimworld\rim-journal\dev-repo\RimJournal\RimJournal\obj\Debug\RimJournal.dll
 D:\Mod Making\Rimworld\rim-journal\dev-repo\RimJournal\RimJournal\obj\Debug\RimJournal.pdb
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\rim-journal\Assemblies\RimJournal.dll
+E:\SteamLibrary\steamapps\common\RimWorld\Mods\rim-journal\Assemblies\RimJournal.pdb
